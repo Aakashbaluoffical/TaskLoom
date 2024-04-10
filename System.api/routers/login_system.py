@@ -20,13 +20,17 @@ router = APIRouter(prefix="",
 @router.post("/api/v1/login")
 def login(username:str = None,password:str = None, db:Session = Depends(get_db)):
     print("Here is your entered Username:",username,"and Password:",password)
-    if (username== 'undefined' and password== 'undefined'):
+    
+    conditional_parameter = [None,"","undefined"]
+    
+    
+    if (username in conditional_parameter  and password in conditional_parameter):
         return {"data": "Invalid!"}
-    if (username == None  and password == None) or (username == ""  and password == ""):
+    if username in conditional_parameter and password in conditional_parameter:
         return {"data": "Please enter your Username & Password."}
-    if (username == None and username== 'undefined')or (username == ""):
+    if username in conditional_parameter:
         return {"data": "Please enter your Username."}
-    if (password == None and password== 'undefined') or (password == ""):
+    if password in conditional_parameter:
         return {"data": "Please enter your Password."}
     #--------------Function ---------------------------------------------
     # def homepage(times):

@@ -1,6 +1,6 @@
 from fastapi import FastAPI , Request
 from fastapi.middleware.cors import CORSMiddleware
-from routers import login_system
+from routers import login_system,works
 import json
 
 
@@ -27,6 +27,8 @@ app.add_middleware(
 )
 
 app.include_router(login_system.router)
+app.include_router(works.router)
+
 
 
 @app.get('/')
