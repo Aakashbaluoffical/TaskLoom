@@ -1,6 +1,6 @@
 from fastapi import FastAPI , Request
 from fastapi.middleware.cors import CORSMiddleware
-from routers import login_system,works
+from routers import login_system,works,deadline_tab
 import json
 
 
@@ -28,6 +28,8 @@ app.add_middleware(
 
 app.include_router(login_system.router)
 app.include_router(works.router)
+app.include_router(deadline_tab.router)
+
 
 
 
