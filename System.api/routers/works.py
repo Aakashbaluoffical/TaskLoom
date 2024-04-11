@@ -32,8 +32,9 @@ async def get_all_works( info:Request ,db:Session = Depends(get_db)):
     
 
 @router.put("/api/v1/works")
-def get_all_works(db:Session = Depends(get_db)):
-    data = querydata.put_work(db) 
+async def get_all_works(info:Request,id:int=None,db:Session = Depends(get_db)):
+    data = await info.json()
+    data = querydata.put_work(db,id,data) 
     return {"data":data}
 
 @router.delete("/api/v1/works")
