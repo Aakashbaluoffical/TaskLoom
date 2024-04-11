@@ -77,5 +77,15 @@ def delete_work(db:Session,bid,person,active):
     return db    
          
     
+#====================================================#
+#                Deadline tab queries                #
+#====================================================#    
+
+
+def get_filtered_works(db:Session,person):
+    if person==None:
+        return db.query(properties_models.AllWorks).filter(properties_models.AllWorks.active==True).all()
+    else:
+        return db.query(properties_models.AllWorks).filter(properties_models.AllWorks.assigned_person == person,properties_models.AllWorks.active==True).all()
     
         
