@@ -88,4 +88,39 @@ def get_filtered_works(db:Session,person):
     else:
         return db.query(properties_models.AllWorks).filter(properties_models.AllWorks.assigned_person == person,properties_models.AllWorks.active==True).all()
     
-        
+def post_type_work(db:Session,data,types):
+    today = datetime.now()
+    format_today = today.strftime("%Y-%m-%d %H:%M:%S")
+    type_content = [ 
+                {
+                "types" :"due_today",
+                "deadline":format_today
+                },
+                {
+                "types" :"due_this_week",
+                "deadline":""
+                },
+                {
+                "types" :"due_next_week",
+                "deadline":""
+                },
+                {
+                "types" :"no_deadline",
+                "deadline":None
+                },
+                {
+                "types" :"due_over_two_weeks",
+                "deadline":""
+                }
+            ]
+    deadline_type = list(filter(lambda x:x['types'] == types,type_content))
+  
+    deadline_row = {"deadline" :deadline_type[0]['deadline']}
+    
+    data.append(deadline_row)
+    datas = properties_models.AllWorks(**data)
+    db.add(datas)
+    db.commit()
+    db.refresh(datas) 
+    return  datas
+       

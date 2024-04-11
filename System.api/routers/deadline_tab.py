@@ -12,7 +12,7 @@ from datetime import datetime
 router = APIRouter(prefix="",
                    tags=["Deadline tab"])
 
-@router.get("/api/v1/works")
+@router.get("/api/v1/deadline_tab")
 def get_all_works(person:str = None, db:Session = Depends(get_db)):
     if person:
         data = querydata.get_filtered_works(db,person) 
@@ -43,3 +43,10 @@ def get_all_works(person:str = None, db:Session = Depends(get_db)):
                 }
             }
 
+
+@router.post("/api/v1/works")
+async def get_all_works(info:Request,types:str=None,db:Session = Depends(get_db)):
+    data = await info.json()
+    
+    data = querydata.post_type_work(db,data,types) 
+    return {'data':'Added'}
