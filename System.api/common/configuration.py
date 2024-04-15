@@ -4,12 +4,12 @@ import os
 
   
 
-class REDISCACHE(BaseSettings):
-    PASSWORD: str = os.environ["REDIS_PASSWORD"]
-    HOST:  str = os.environ["REDIS_HOST"]
-    PORT:  str = os.environ["REDIS_PORT"]
-    SOCKET_TIMEOUT : int = os.environ["REDIS_SOCKET_TIMEOUT"]
-    DB : int = os.environ["REDIS_DB"]
+# class REDISCACHE(BaseSettings):
+#     PASSWORD: str = os.environ["REDIS_PASSWORD"]
+#     HOST:  str = os.environ["REDIS_HOST"]
+#     PORT:  str = os.environ["REDIS_PORT"]
+#     SOCKET_TIMEOUT : int = os.environ["REDIS_SOCKET_TIMEOUT"]
+#     DB : int = os.environ["REDIS_DB"]
 
 class POSTGRESDB(BaseSettings):
     USERNAME1:  str = 'postgres'
@@ -30,11 +30,12 @@ class POSTGRESDB(BaseSettings):
 # #     PORT:  str = "SYSYEM API"
 # #     SCHEMA:str = "mscsmvdm_vms"
     
+CLIENT: str = "TASKLOOM" + "_"
+
 class SETTINGS(BaseSettings):
-    CLIENT: str = os.environ["CLIENT_NAME"] + "_"
     CACHE_EXPIRY_IN_SECONDS: int = CLIENT + os.environ["CACHE_EXPIRY_IN_SECONDS"] #SECONDS
 
 class CACHEKEY(BaseSettings):
-    CLIENT: str = os.environ["CLIENT_NAME"] + "_"
+    
     TRIM_DATA: str = CLIENT + os.environ["CACHE_TRIM_DATA"]
 
