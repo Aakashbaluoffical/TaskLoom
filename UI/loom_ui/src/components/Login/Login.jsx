@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 // import Login_image from '../../assets/login.jpg';
 import "./Login.css";
 import {
@@ -14,19 +15,13 @@ import {
   Typography,
   Container,
   ThemeProvider,
+  IconButton,
 } from "@mui/material";
-// import Avatar from "@mui/material/Avatar";
-// import Button from "@mui/material/Button";
-// import CssBaseline from "@mui/material/CssBaseline";
-// import TextField from "@mui/material/TextField";
-// import FormControlLabel from "@mui/material/FormControlLabel";
-// import Checkbox from "@mui/material/Checkbox";
-// import Link from "@mui/material/Link";
-// import Grid from "@mui/material/Grid";
-// import Box from "@mui/material/Box";
-// import Typography from "@mui/material/Typography";
-// import Container from "@mui/material/Container";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import ClearIcon from "@mui/icons-material/Clear";
+
 import { createTheme } from "@mui/material/styles";
 
 function Copyright(props) {
@@ -55,6 +50,8 @@ function Login() {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginMessage, setLoginMessage] = useState("");
 
   const isValidEmail = (email) => {
     // Basic email format validation
@@ -86,8 +83,29 @@ function Login() {
       return;
     }
 
-    // If validations pass, you can proceed with the login process
-    // Example: loginUser(email, password);
+    // Make LOGIN API call using Axios
+    axios
+      .post("http://localhost:9000/api/v1/login", {
+        username: email,
+        password: password,
+      })
+      .then((response) => {
+        // Handle successful response
+        console.log("Login successful:", response.data);
+        const responseData = response.data;
+        setLoginMessage(responseData.data); // Display the alert message from the response
+      })
+      .catch((error) => {
+        // Handle error
+        console.error("Error occurred during login:", error.message);
+        setLoginMessage(
+          "An error occurred during login. Please try again later."
+        ); // Set the error message
+      });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -119,6 +137,25 @@ function Login() {
               noValidate
               sx={{ mt: 1 }}
             >
+              {loginMessage && (
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  {loginMessage.includes("error") && (
+                    <ClearIcon
+                      fontSize="small"
+                      color="error"
+                      style={{ marginRight: 4 }}
+                    />
+                  )}
+                  <Typography
+                    variant="body1"
+                    color={
+                      loginMessage.includes("error") ? "error" : "textPrimary"
+                    }
+                  >
+                    {loginMessage}
+                  </Typography>
+                </Box>
+              )}
               <TextField
                 margin="normal"
                 required
@@ -142,7 +179,7 @@ function Login() {
                 fullWidth
                 name="password"
                 label="Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 autoComplete="current-password"
                 value={password}
@@ -154,6 +191,21 @@ function Login() {
                     ? "Password must be at least 8 characters long and include uppercase, lowercase, digit, and special characters"
                     : ""
                 }
+                InputProps={{
+                  endAdornment: (
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={togglePasswordVisibility}
+                      edge="end"
+                    >
+                      {showPassword ? (
+                        <VisibilityOffIcon />
+                      ) : (
+                        <VisibilityIcon />
+                      )}
+                    </IconButton>
+                  ),
+                }}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
