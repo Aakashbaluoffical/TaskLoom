@@ -13,7 +13,7 @@ class User(Base):
     email =  Column (String)
     status =  Column (String)
     mobile_no =  Column (Integer)
-    type =  Column (String)
+    types =  Column (String)
     block =  Column (String)
     times =  Column (Integer) 
     block_date_time =  Column (Date) 

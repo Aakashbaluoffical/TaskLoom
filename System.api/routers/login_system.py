@@ -9,7 +9,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials #jwt
 import json
 import smtplib
 import logging
-import jwt   #jwt 
+# import jwt   #jwt 
 
 
 
@@ -76,7 +76,7 @@ def login(username:str = None,password:str = None, db:Session = Depends(get_db))
         user_check = json.dumps(jsonable_encoder(user_check))
         user_check = json.loads(user_check)
         if user_check :
-            if user_check['times']!=0 :
+            if user_check['times']!=0 and user_check['times'] is not None:
                 times = user_check['times']-1
                 querydata.update_times(db,times,username,now_time)
                 return {"data":f"Incorrect Password, {user_check['times']} more changes"}
@@ -84,7 +84,7 @@ def login(username:str = None,password:str = None, db:Session = Depends(get_db))
                 user_check = querydata.check_user(db,username)
                 user_check = json.dumps(jsonable_encoder(user_check))
                 user_time_check = json.loads(user_check)
-                if user_time_check['block_date_time'] != "":
+                if user_time_check['block_date_time'] is not None:
                     block_date_time =datetime.strptime(user_time_check['block_date_time'], "%Y-%m-%dT%H:%M:%S.%f")
                     new_block_date = block_date_time + relativedelta(minutes=1)
                     print("now_time",now_time)
