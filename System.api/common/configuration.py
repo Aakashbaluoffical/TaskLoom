@@ -16,7 +16,7 @@ class POSTGRESDB(BaseSettings):
     PASSWORD: str = 'admin'
     HOST:  str = 'localhost'
     PORT:  str = '5432'
-    SCHEMA: str = 'local_client'
+    SCHEMA: str = 'taskloom'
 
 # # class STRAPIDB(BaseSettings):
 # #     URL: str =  os.environ["STRAPI_URL"]
@@ -31,11 +31,14 @@ class POSTGRESDB(BaseSettings):
 # #     SCHEMA:str = "mscsmvdm_vms"
     
 CLIENT: str = "TASKLOOM" + "_"
+CACHE_EXPIRY_IN_SECONDS = "1800"
 
 class SETTINGS(BaseSettings):
-    CACHE_EXPIRY_IN_SECONDS: int = CLIENT + os.environ["CACHE_EXPIRY_IN_SECONDS"] #SECONDS
-
-class CACHEKEY(BaseSettings):
+    # CACHE_EXPIRY_IN_SECONDS: int = CLIENT + os.environ["CACHE_EXPIRY_IN_SECONDS"] #SECONDS
+    CACHE_EXPIRY_IN_SECONDS: int = CLIENT + CACHE_EXPIRY_IN_SECONDS
     
-    TRIM_DATA: str = CLIENT + os.environ["CACHE_TRIM_DATA"]
+
+# class CACHEKEY(BaseSettings):
+    
+    # TRIM_DATA: str = CLIENT + os.environ["CACHE_TRIM_DATA"]
 
