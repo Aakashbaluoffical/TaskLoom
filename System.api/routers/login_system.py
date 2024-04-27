@@ -25,13 +25,13 @@ def login(username:str = None,password:str = None, db:Session = Depends(get_db))
     
     
     if (username in conditional_parameter  and password in conditional_parameter):
-        return {"data": "Invalid!"}
+        return {"data":[],"Error":"Invalid!"}
     if username in conditional_parameter and password in conditional_parameter:
-        return {"data": "Please enter your Username & Password."}
+        return {"data":[],"Error":"Please enter your Username & Password."}
     if username in conditional_parameter:
-        return {"data": "Please enter your Username."}
+        return {"data":[],"Error":"Please enter your Username."}
     if password in conditional_parameter:
-        return {"data": "Please enter your Password."}
+        return {"data":[],"Error":"Please enter your Password."}
     #--------------Function ---------------------------------------------
     # def homepage(times):
     #     print("count ",times)
@@ -63,13 +63,13 @@ def login(username:str = None,password:str = None, db:Session = Depends(get_db))
     data = json.dumps(jsonable_encoder(data))
     data = json.loads(data)
     if data and data['block'] == 'block':
-        return {"data":"Account has been permanently suspended "}
+        return {"data":[],"Error":"Account has been permanently suspended "}
     if data and data['block_date_time']=="" :
-        return {"data":"Welcome your Home page"}
+        return {"data":['Welcome your Home page'],"Error":""}
     if data and data['block_date_time'] and data['times'] !=0: 
         querydata.update_times_after(db,username)
         print("data['block_date_time'] and data['times']",data['block_date_time'], data['times'])
-        return {"data":"Welcome your Home page"}
+        return {"data":['Welcome your Home page'],"Error":""}
          
     elif username:
         user_check = querydata.check_user(db,username)
@@ -79,7 +79,7 @@ def login(username:str = None,password:str = None, db:Session = Depends(get_db))
             if user_check['times']!=0 and user_check['times'] is not None:
                 times = user_check['times']-1
                 querydata.update_times(db,times,username,now_time)
-                return {"data":f"Incorrect Password, {user_check['times']} more changes"}
+                return {"data":[],"Error":f"Incorrect Password, {user_check['times']} more changes"}
             else:
                 user_check = querydata.check_user(db,username)
                 user_check = json.dumps(jsonable_encoder(user_check))
@@ -92,18 +92,18 @@ def login(username:str = None,password:str = None, db:Session = Depends(get_db))
                     # if user_time_check['block'] == 'clear' and user_time_check['block'] == 'unblock':
                     if now_time > new_block_date :
                         querydata.update_times_after(db,username)
-                        return {"data":"Your account is unlocked ,please enter correct password"}
+                        return {"data":[],"Error":"Your account is unlocked ,please enter correct password"}
                     else:
-                        return {"data":"Account is locked due to multiple incorrect attempts. Check after 1 minites"}
+                        return {"data":[],"Error":"Account is locked due to multiple incorrect attempts. Check after 1 minites"}
                     # else:
                     #      return {"data":"Account has been permanently suspended "}   
                 else:
                     blocked_time = datetime.now()
                     querydata.update_only_times(db,username,blocked_time)
                     
-                    return {"data":"Account is locked due to multiple incorrect attempts. Check after 1 minites"}
+                    return {"data":[],"Error":"Account is locked due to multiple incorrect attempts. Check after 1 minites"}
         else:
-            return {"data":"User not found!"}
+            return {"data":[],"Error":"User not found!"}
      
      
      
