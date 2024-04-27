@@ -16,13 +16,16 @@ import {
   Container,
   ThemeProvider,
   IconButton,
+  Card,
+  CardContent,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import ClearIcon from "@mui/icons-material/Clear";
-
 import { createTheme } from "@mui/material/styles";
+import { BASE_URL } from "../../services/constants";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -33,8 +36,8 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Team Loom
+      <Link color="inherit" href="http://localhost:3000">
+        Task Loom
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -74,6 +77,8 @@ function Login() {
     setPasswordError(!isValidPassword(password));
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setEmailError(!isValidEmail(email));
@@ -82,25 +87,27 @@ function Login() {
     if (!isValidEmail(email) || !isValidPassword(password)) {
       return;
     }
-
+    const url = `${BASE_URL}/api/v1/login`;
+    const queryParams = new URLSearchParams({
+      username: email,
+      password: password,
+    });
     // Make LOGIN API call using Axios
     axios
-      .post("http://localhost:9000/api/v1/login", {
-        username: email,
-        password: password,
-      })
+      .post(`${url}?${queryParams}`)
       .then((response) => {
         // Handle successful response
         console.log("Login successful:", response.data);
         const responseData = response.data;
         setLoginMessage(responseData.data); // Display the alert message from the response
+
+        // Redirect to dashboard after successful login
+        navigate("/dashboard");
       })
       .catch((error) => {
         // Handle error
-        console.error("Error occurred during login:", error.message);
-        setLoginMessage(
-          "An error occurred during login. Please try again later."
-        ); // Set the error message
+        // console.error("Error occurred during login:", error.message);
+        setLoginMessage("An error occurred. Please try again."); // Set the error message
       });
   };
 
@@ -110,7 +117,6 @@ function Login() {
 
   return (
     <>
-      {/* <div> */}
       <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="xs">
           {/* <div className='login_image_container'>
@@ -138,23 +144,29 @@ function Login() {
               sx={{ mt: 1 }}
             >
               {loginMessage && (
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  {loginMessage.includes("error") && (
-                    <ClearIcon
-                      fontSize="small"
-                      color="error"
-                      style={{ marginRight: 4 }}
-                    />
-                  )}
-                  <Typography
-                    variant="body1"
-                    color={
-                      loginMessage.includes("error") ? "error" : "textPrimary"
-                    }
-                  >
-                    {loginMessage}
-                  </Typography>
-                </Box>
+                <Card sx={{ border: "2px solid red" }}>
+                  <CardContent>
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      {loginMessage.includes("error") && (
+                        <ClearIcon
+                          fontSize="small"
+                          color="error"
+                          style={{ marginRight: 4 }}
+                        />
+                      )}
+                      <Typography
+                        variant="body1"
+                        color={
+                          loginMessage.includes("error")
+                            ? "error"
+                            : "textPrimary"
+                        }
+                      >
+                        {loginMessage}
+                      </Typography>
+                    </Box>
+                  </CardContent>
+                </Card>
               )}
               <TextField
                 margin="normal"
@@ -236,7 +248,6 @@ function Login() {
           <Copyright sx={{ mt: 8, mb: 4 }} />
         </Container>
       </ThemeProvider>
-      {/* </div> */}
     </>
   );
 }
