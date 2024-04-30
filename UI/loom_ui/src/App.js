@@ -13,6 +13,7 @@ import Deadlines from "./components/Deadlines/Deadlines";
 import Planner from "./components/Planner/Planner";
 import Sidebar from "./components/SideBar/SideBar";
 import TopBar from "./components/TopBar/TopBar";
+import Register from "./components/Register/Register";
 import "./App.css";
 
 const useStyles = makeStyles({
@@ -26,23 +27,24 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/account/signin" element={<Login />} />
+        <Route path="/user/login" element={<Login />} />
+        <Route path="/user/register" element={<Register />} />
         <Route
           path="/*"
           element={
             <div className={classes.root}>
               <TopBar />
-                <div className={classes.content}>
-                  <Sidebar />
-                  <Routes>
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/my-tasks" element={<MyTasks />} />
-                    <Route path="/deadlines" element={<Deadlines />} />
-                    <Route path="/planner" element={<Planner />} />
-                    <Route path="/" element={<Navigate to="/account/signin" />} />
-                    {/* Add routes for other pages here */}
-                  </Routes>
-                </div>
+              <div className={classes.content}>
+                <Sidebar />
+                <Routes>
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/my-tasks" element={<MyTasks />} />
+                  <Route path="/deadlines" element={<Deadlines />} />
+                  <Route path="/planner" element={<Planner />} />
+                  <Route path="/" element={<Navigate to="/user/login" />} />
+                  {/* Add routes for other pages here */}
+                </Routes>
+              </div>
             </div>
           }
         />
@@ -52,3 +54,5 @@ function App() {
 }
 
 export default App;
+
+
