@@ -22,10 +22,11 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import ClearIcon from "@mui/icons-material/Clear";
+// import ClearIcon from "@mui/icons-material/Clear";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { createTheme } from "@mui/material/styles";
 import { BASE_URL } from "../../services/constants";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -97,17 +98,22 @@ function Login() {
       .post(`${url}?${queryParams}`)
       .then((response) => {
         // Handle successful response
-        console.log("Login successful:", response.data);
-        const responseData = response.data;
-        setLoginMessage(responseData.data); // Display the alert message from the response
-
-        // Redirect to dashboard after successful login
-        navigate("/dashboard");
+        // console.log("Login successful:", response.data.data);
+        const responseData = response.data.data;
+        const errorMessage = response.data.Error;
+        // console.log("object", errorMessage);
+        if (responseData.length === 0) {
+          // If login data is empty, display error message and prevent login
+          setLoginMessage(errorMessage);
+        } else {
+          // Redirect to dashboard after successful login
+          navigate("/dashboard");
+        }
       })
       .catch((error) => {
         // Handle error
         // console.error("Error occurred during login:", error.message);
-        setLoginMessage("An error occurred. Please try again."); // Set the error message
+        setLoginMessage("Error occurred"); // Set the error message
       });
   };
 
@@ -129,13 +135,14 @@ function Login() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Welcome!
             </Typography>
             <Box
               component="form"
@@ -148,7 +155,7 @@ function Login() {
                   <CardContent>
                     <Box sx={{ display: "flex", alignItems: "center" }}>
                       {loginMessage.includes("error") && (
-                        <ClearIcon
+                        <ErrorOutlineIcon
                           fontSize="small"
                           color="error"
                           style={{ marginRight: 4 }}
@@ -219,6 +226,13 @@ function Login() {
                   ),
                 }}
               />
+              <Grid container>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+              </Grid>
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
@@ -229,17 +243,16 @@ function Login() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                Log In
               </Button>
               <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                  <Link
+                    component={RouterLink}
+                    to="/user/register"
+                    variant="body2"
+                  >
+                    {"Don't have an account? Register here"}
                   </Link>
                 </Grid>
               </Grid>
