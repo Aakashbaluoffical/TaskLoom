@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 // import Login_image from '../../assets/login.jpg';
-import "./Login.css";
 import {
   Avatar,
   Button,
@@ -27,6 +26,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { createTheme } from "@mui/material/styles";
 import { BASE_URL } from "../../services/constants";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
+import "./Login.css";
 
 function Copyright(props) {
   return (
@@ -124,7 +124,7 @@ function Login() {
   return (
     <>
       <ThemeProvider theme={defaultTheme}>
-        <Container component="main" maxWidth="xs">
+        <Container className="container" component="main" maxWidth="350px">
           {/* <div className='login_image_container'>
             <img className='login_image'  src={Login_image} alt="No_image"/>
             </div> */}
@@ -135,7 +135,6 @@ function Login() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
@@ -245,16 +244,14 @@ function Login() {
               >
                 Log In
               </Button>
-              <Grid container>
-                <Grid item>
-                  <Link
-                    component={RouterLink}
-                    to="/user/register"
-                    variant="body2"
-                  >
-                    {"Don't have an account? Register here"}
-                  </Link>
-                </Grid>
+              <Grid item xs={12} align="center">
+                <Link
+                  component={RouterLink}
+                  to="/user/register"
+                  variant="body2"
+                >
+                  {"Don't have an account? Register here"}
+                </Link>
               </Grid>
             </Box>
           </Box>
