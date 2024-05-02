@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   ThemeProvider,
+  CssBaseline,
   Container,
   Typography,
   Box,
@@ -8,9 +9,16 @@ import {
   Button,
   Grid,
   Link,
+  createTheme,
+  Divider,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import { createTheme } from "@mui/material/styles";
+import { Google } from "@mui/icons-material";
+import GoogleLogo from "../../assets/google.png";
+// import Googlefull from "../../assets/social.png";
+import "./styles.css";
+import axios from "axios";
+// import { createTheme } from "@mui/material/styles";
 
 const Register = () => {
   const defaultTheme = createTheme();
@@ -20,7 +28,7 @@ const Register = () => {
   const [mobileNo, setMobileNo] = useState("");
   const [pinNumber, setPinNumber] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Perform registration logic here
     console.log("Submitted:", {
@@ -30,48 +38,80 @@ const Register = () => {
       mobileNo,
       pinNumber,
     });
+
+    try {
+      const response = await axios.post(
+        "http://192.168.54.21:9000/api/v1/register",
+        {
+          email,
+          password,
+          reEnterPassword,
+          mobileNo,
+          pinNumber,
+        }
+      );
+
+      console.log("Registration successful:", response.data);
+      // Optionally, you can redirect the user to another page or show a success message
+    } catch (error) {
+      console.error("Registration failed:", error.response.data);
+      // Optionally, you can display an error message to the user
+    }
+  };
+
+  // Function to handle registration with Google
+  const handleRegisterWithGoogle = () => {
+    // Make a request to the Google API using Axios
+    // axios
+    //   .get("https://example.com/api/google")
+    //   .then((response) => {
+    //     // Handle the response data here
+    //     console.log(response.data);
+    //   })
+    //   .catch((error) => {
+    //     // Handle errors here
+    //     console.error("Error fetching data:", error);
+    //   });
   };
   return (
     <>
       <ThemeProvider theme={defaultTheme}>
-        <Container maxWidth="xs">
+        <Container className="container" component="main" maxWidth="350px">
+          <CssBaseline />
           <Box
+            className="box"
             onSubmit={handleSubmit}
             component="form"
             sx={{
-              marginTop: 6,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              "& .MuiTextField-root": { m: 0, height: "40px" },
+              marginTop: 4,
+              //   "& .MuiTextField-root": { m: 0, height: "40px" },
             }}
-            // sx={{
-            //   "& .MuiTextField-root": { m: 0, height: "40px" },
-            // }}
             noValidate
             autoComplete="off"
           >
             <Typography variant="h5" align="center" gutterBottom>
               Create your Loom account!
             </Typography>
-
             {/* <form onSubmit={handleSubmit}> */}
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
+                  required
                   label="Email"
                   type="email"
+                  id="email"
                   variant="outlined"
                   fullWidth
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  sx={{ marginBottom: "10px" }}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  required
                   label="Password"
                   type="password"
+                  id="password"
                   variant="outlined"
                   fullWidth
                   value={password}
@@ -80,8 +120,10 @@ const Register = () => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  required
                   label="Re-enter Password"
                   type="password"
+                  id="password"
                   variant="outlined"
                   fullWidth
                   value={reEnterPassword}
@@ -90,8 +132,11 @@ const Register = () => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  required
+                  sx={{ height: "45px" }}
                   label="Mobile No"
-                  type="text"
+                  type="number"
+                  id="number"
                   variant="outlined"
                   fullWidth
                   value={mobileNo}
@@ -100,8 +145,10 @@ const Register = () => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  required
                   label="Pin Number"
-                  type="text"
+                  type="password"
+                  id="password"
                   variant="outlined"
                   fullWidth
                   value={pinNumber}
@@ -118,7 +165,29 @@ const Register = () => {
                   Register
                 </Button>
               </Grid>
-              <Grid item>
+              <Grid item xs={12} sx={{ display: "flex", alignItems: "center" }}>
+                <Divider sx={{ flexGrow: 1 }} />
+                <Typography variant="body2" sx={{ px: 2 }}>
+                  OR
+                </Typography>
+                <Divider sx={{ flexGrow: 1 }} />
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  fullWidth
+                  onClick={handleRegisterWithGoogle} // Add onClick handler for registering with Google
+                >
+                  <img
+                    src={GoogleLogo}
+                    alt={Google}
+                    style={{ marginRight: "8px", height: "24px" }}
+                  />
+                  Conitue with Google
+                </Button>
+              </Grid>
+              <Grid item xs={12} align="center">
                 <Link component={RouterLink} to="/user/login" variant="body2">
                   {"Already have an account? Log In"}
                 </Link>
@@ -133,3 +202,5 @@ const Register = () => {
 };
 
 export default Register;
+
+//Googleregister api install -> npm install gapi-script react-google-login
