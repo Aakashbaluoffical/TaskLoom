@@ -11,12 +11,31 @@ import os
 #     SOCKET_TIMEOUT : int = os.environ["REDIS_SOCKET_TIMEOUT"]
 #     DB : int = os.environ["REDIS_DB"]
 
+# class POSTGRESDB(BaseSettings):
+#     USERNAME1:  str = 'postgres'
+#     PASSWORD: str = 'admin'
+#     HOST:  str = 'localhost'
+#     PORT:  str = '5432'
+#     SCHEMA: str = 'taskloom'
+    
+    
+    
 class POSTGRESDB(BaseSettings):
+    
+    POSTGRES_USERNAME=os.environ["POSTGRES_USERNAME"]
+    POSTGRES_PASSWORD=os.environ["POSTGRES_PASSWORD"]
+    POSTGRES_HOST=os.environ["POSTGRES_HOST"]
+    POSTGRES_PORT=os.environ["POSTGRES_PORT"]
+    POSTGRES_SCHEMA=os.environ["POSTGRES_SCHEMA"]
+    # Local db    
     USERNAME1:  str = 'postgres'
     PASSWORD: str = 'admin'
     HOST:  str = 'localhost'
     PORT:  str = '5432'
     SCHEMA: str = 'taskloom'
+      
+
+    
 
 # # class STRAPIDB(BaseSettings):
 # #     URL: str =  os.environ["STRAPI_URL"]
