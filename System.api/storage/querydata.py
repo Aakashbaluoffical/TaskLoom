@@ -124,3 +124,29 @@ def post_type_work(db:Session,data,types):
     db.refresh(datas) 
     return  datas
        
+def post_user(db:Session,data):
+       
+    datas = properties_models.User(**data)
+    db.add(datas)
+    db.commit()
+    db.refresh(datas) 
+    return  datas   
+
+
+def check_unique_user(db:Session,email):
+    data = db.query(
+        properties_models.User.email
+        ).filter(
+            properties_models.User.email==email
+        ).all()
+
+    
+
+    # Define the keys for the dictionary
+    keys = ['email']
+
+    # Create a list of dictionaries with key-value pairs
+    data_list = [dict(zip(keys, row)) for row in data]
+
+    # Return the list of dictionaries
+    return data_list
