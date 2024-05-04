@@ -1,4 +1,4 @@
-from fastapi import APIRouter,Depends
+from fastapi import APIRouter,Depends,Request
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 from storage.database import get_db
@@ -9,6 +9,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials #jwt
 import json
 import smtplib
 import logging
+# import requests
 # import jwt   #jwt 
 
 
@@ -127,10 +128,30 @@ def login(username:str = None,password:str = None, db:Session = Depends(get_db))
      
      
 @router.post("/api/v1/register")
-def register(email:str = None,password:str = None,mobile:int = None, db:Session = Depends(get_db)):
-    print("Here is your entered Username:",username,"and Password:",password)
+async def register(info:Request , db:Session = Depends(get_db)):
     
-    conditional_parameter = [None,"","undefined"]     
+    data = await info.form()
+    print("data",data)
+    if data:
+        data = querydata.check_unique_user(db,data[0]['email'])
+        if data is None:
+            try:
+                querydata.post_user(db,data)
+                return  {"data":['Registration Successful!'],"Error":""} 
+            except:
+                return {"data":[],"Error":"Something issue  with Database! Try Again Later."}
+        else:
+            return {"data":[],"Error":"Email already exist !"}
+    else:
+        return {"data":[],"Error":"No Data!"}      
+    
+         
+        
+     
+    
+    
+        
+        
      
      
      
