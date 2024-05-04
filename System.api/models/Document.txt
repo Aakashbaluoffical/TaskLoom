@@ -1,0 +1,32 @@
+create a table 
+===============================
+
+
+CREATE TABLE IF NOT EXISTS public.user_tbls
+ 
+(
+ 
+     id SERIAL PRIMARY KEY,
+ 
+    username character varying(255) COLLATE pg_catalog."default",
+    password character varying(255) COLLATE pg_catalog."default",
+    email character varying(255) COLLATE pg_catalog."default",
+    status character varying(255) COLLATE pg_catalog."default",
+    mobile_no bigint,
+    types character varying(255) COLLATE pg_catalog."default",
+    block boolean,
+    block_date_time timestamp(6) without time zone,
+    created_at timestamp(6) without time zone,
+    updated_at timestamp(6) without time zone,
+    published_at timestamp(6) without time zone,
+    created_by_id integer,
+    updated_by_id integer,
+    times integer
+);
+
+
+Add columns 
+================================
+
+ALTER TABLE user_tbls
+ADD COLUMN pin integer;
