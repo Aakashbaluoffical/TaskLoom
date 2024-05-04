@@ -15,9 +15,9 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import { Google } from "@mui/icons-material";
 import GoogleLogo from "../../assets/google.png";
-// import Googlefull from "../../assets/social.png";
 import "./styles.css";
 import axios from "axios";
+import { BASE_URL } from "../../services/constants";
 // import { createTheme } from "@mui/material/styles";
 
 const Register = () => {
@@ -28,7 +28,7 @@ const Register = () => {
   const [mobileNo, setMobileNo] = useState("");
   const [pinNumber, setPinNumber] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     // Perform registration logic here
     console.log("Submitted:", {
@@ -39,24 +39,31 @@ const Register = () => {
       pinNumber,
     });
 
-    try {
-      const response = await axios.post(
-        "http://192.168.54.21:9000/api/v1/register",
-        {
-          email,
-          password,
-          reEnterPassword,
-          mobileNo,
-          pinNumber,
+    axios
+      .post(`${BASE_URL}/api/v1/register`, {
+        email,
+        password,
+        reEnterPassword,
+        mobileNo,
+        pinNumber,
+      })
+      .then((response) => {
+        console.log("Registration successful:", response.data);
+        // Optionally, you can redirect the user to another page or show a success message
+      })
+      .catch((error) => {
+        if (error.response) {
+          // Server responded with a status code
+          console.error("Registration failed:", error.response.data);
+        } else if (error.request) {
+          // Request made but no response received
+          console.error("No response received:", error.request);
+        } else {
+          // Something else happened
+          console.error("Error:", error.message);
         }
-      );
-
-      console.log("Registration successful:", response.data);
-      // Optionally, you can redirect the user to another page or show a success message
-    } catch (error) {
-      console.error("Registration failed:", error.response.data);
-      // Optionally, you can display an error message to the user
-    }
+        // Optionally, you can display an error message to the user
+      });
   };
 
   // Function to handle registration with Google
@@ -92,7 +99,6 @@ const Register = () => {
             <Typography variant="h5" align="center" gutterBottom>
               Create your Loom account!
             </Typography>
-            {/* <form onSubmit={handleSubmit}> */}
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -193,7 +199,6 @@ const Register = () => {
                 </Link>
               </Grid>
             </Grid>
-            {/* </form> */}
           </Box>
         </Container>
       </ThemeProvider>
@@ -202,5 +207,3 @@ const Register = () => {
 };
 
 export default Register;
-
-//Googleregister api install -> npm install gapi-script react-google-login
