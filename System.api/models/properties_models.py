@@ -17,6 +17,7 @@ class User(Base):
     block =  Column (String)
     times =  Column (Integer) 
     block_date_time =  Column (Date) 
+    pin =  Column (Integer) 
     
     
    
