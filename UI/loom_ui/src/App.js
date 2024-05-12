@@ -19,6 +19,14 @@ import "./App.css";
 const useStyles = makeStyles({
   root: {
     display: "flex",
+    flexDirection: "row", // Arrange children in a row
+    minHeight: "100vh",
+  },
+  content: {
+    flex: 1, // Allow the content area to grow and fill the remaining space
+    padding: "20px", // Adjust padding as needed
+    marginLeft: "145px",
+    marginRight: "10px",
   },
 });
 
@@ -32,20 +40,22 @@ function App() {
         <Route
           path="/*"
           element={
-            <div className={classes.root}>
+            <>
               <TopBar />
-              <div className={classes.content}>
+              <div className={classes.root}>
                 <Sidebar />
-                <Routes>
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/my-tasks" element={<MyTasks />} />
-                  <Route path="/deadlines" element={<Deadlines />} />
-                  <Route path="/planner" element={<Planner />} />
-                  <Route path="/" element={<Navigate to="/user/login" />} />
-                  {/* Add routes for other pages here */}
-                </Routes>
+                <div className={classes.content}>
+                  <Routes>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/my-tasks" element={<MyTasks />} />
+                    <Route path="/deadlines" element={<Deadlines />} />
+                    <Route path="/planner" element={<Planner />} />
+                    <Route path="/" element={<Navigate to="/user/login" />} />
+                    {/* Add routes for other pages here */}
+                  </Routes>
+                </div>
               </div>
-            </div>
+            </>
           }
         />
       </Routes>

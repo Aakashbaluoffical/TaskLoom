@@ -94,8 +94,8 @@ const TopBar = () => {
   }, [countdown, logoutConfirmationOpen]);
 
   return (
-    <AppBar position="static">
-      <Toolbar style={{ justifyContent: "space-between" }}>
+    <AppBar position="static" style={{ backgroundColor: "#ffffff" }}>
+      <Toolbar style={{ justifyContent: "space-between", color: "#000000" }}>
         <div style={{ flex: 1 }} />
         <Typography
           variant="h6"
