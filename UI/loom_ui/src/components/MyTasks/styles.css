@@ -1,5 +1,52 @@
-.cardStyle {
+/* .cardStyle {
   border-radius: 5px;
   width: 100%;
   margin-top: 10px;
+} */
+
+.my-tasks {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.my-tasks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-filter {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.task-list {
+  flex: 1;
+  overflow-y: auto;
+  /* margin-top: 20px; */
+}
+
+.ant-card {
+  width: 100%;
+}
+
+.ant-input-affix-wrapper {
+  width: 100%;
+}
+
+.list-item {
+  width: calc(
+    100%
+  ); /* Set width for each item to 1/3 of the container width minus gutter */
+  height: 200px; /*Set height for each item */
+  margin-right: 8px; /* Add some right margin to create space between items */
+  margin-bottom: 16px; /* Add bottom margin to create space between rows */
+  float: left; /* Float items left to create inline layout */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+  border-radius: 10px; /* Add border radius for rounded corners */
+  overflow-x: auto;
 }
